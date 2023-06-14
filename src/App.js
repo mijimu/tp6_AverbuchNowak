@@ -1,16 +1,17 @@
 import './App.css';
 import { useEffect, useState } from 'react'; 
 import axios from 'axios';
+import Bandera from './Bandera/Bandera';
 
+const baseURL = "https://countriesnow.space/api/v0.1/countries/flag/images";
 
 function App() {
 
   const [puntos, setPuntos ] = useState(0);
-  const [paisElegido, setPaisElegido] = useState('');
+  const [paisIngresado, setPaisIngresado] = useState('');
   const [ paises, setPaises ] = useState ([]); 
-  const [ paisRandom, setRandom ] = useState ([]);
-  
-    
+  const [ paisSeleccionado, setPaisSeleccionado ] = useState ('');
+  const [ esCorrecta, setEsCorrecta ] = useState (false);
   
   const sumarDiez = () => {
     setPuntos(puntos+10);
@@ -20,18 +21,29 @@ function App() {
     setPuntos(puntos-1);
   };
   const getRandomObject = (paises) => {
-    const paisRandom = paises[Math.floor(Math.random() * paises.length)];
-    setRandom(paisRandom);
+    const paisSelected = paises[Math.floor(Math.random() * paises.length)];
+    setPaisSeleccionado(paisSelected);
+    console.log(paisSelected);
   };
 
+  const onKeyUpHandler = (e) => {
+    setPaisIngresado(e.target.value)
+    if(paisIngresado.name === onKeyUpHandler.target.value){
+      setEsCorrecta(true)
+    }
+    
+  }
+
   useEffect(() => {
-    getRandomObject(setPaises);
+    //getRandomObject(paises);
   }, []);
 
   useEffect(() => {
-    axios.get('https://countriesnow.space/api/v0.1/countries/flag/images')
-    .then ((response) => {
-      setPaises(response.data);
+    axios.get(baseURL).then ((response) => {
+      console.log(response.data.data)
+      setPaises(response.data.data);
+      console.log(response.data.data);
+      getRandomObject(response.data.data);
     });
   
   }, []);
@@ -39,13 +51,12 @@ function App() {
 return (
     <div className="App">
       <header className="App-header">
-      {/*{paises.map((paises) => (
-          {paises} 
-      ))}*/}
       <div className='boxInput'>
+        <Bandera pais={paisSeleccionado}></Bandera>
         <h5 className='h5'>Adivine el pais</h5>
-        <input onKeyUp={(e) => setPaisElegido(e.target.value)} />
-        <p className='grayText'>Su respuesta:   {paisElegido}</p>
+        <input onKeyUp={onKeyUpHandler} />
+        {/*<p className='grayText'>Su respuesta:   paisIngresado</p>*/}
+        {esCorrecta ? <p>Es correcta</p> : <p>Incorrecto</p>}
       </div>
       
       </header>

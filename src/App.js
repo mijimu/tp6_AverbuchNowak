@@ -13,50 +13,63 @@ function App() {
   const [ paisSeleccionado, setPaisSeleccionado ] = useState ('');
   const [ esCorrecta, setEsCorrecta ] = useState (false);
   
-  const sumarDiez = () => {
+  const sumarDiez = (puntos) => {
     setPuntos(puntos+10);
+    console.log(puntos);
   };
 
-  const restarUno = () => {
+  const restarUno = (puntos) => {
     setPuntos(puntos-1);
+    console.log(puntos);
   };
+
   const getRandomObject = (paises) => {
     const paisSelected = paises[Math.floor(Math.random() * paises.length)];
     setPaisSeleccionado(paisSelected);
-    console.log(paisSelected);
   };
 
   const onKeyUpHandler = (e) => {
     setPaisIngresado(e.target.value)
-    if(paisIngresado.name === onKeyUpHandler.target.value){
+
+    if(paisSeleccionado.name === e.target.value){
       setEsCorrecta(true)
     }
-    
   }
 
-  useEffect(() => {
-    //getRandomObject(paises);
-  }, []);
+  const actualizarPuntos = () => {
+    if (esCorrecta) {
+      setPuntos(sumarDiez)
+    } else {
+      setPuntos(restarUno)
+    }
+  }
+
 
   useEffect(() => {
     axios.get(baseURL).then ((response) => {
-      console.log(response.data.data)
       setPaises(response.data.data);
-      console.log(response.data.data);
       getRandomObject(response.data.data);
     });
   
   }, []);
-  
+
+console.log(puntos);
+
 return (
     <div className="App">
       <header className="App-header">
       <div className='boxInput'>
+        {paisSeleccionado.name}
+        <p></p>
         <Bandera pais={paisSeleccionado}></Bandera>
         <h5 className='h5'>Adivine el pais</h5>
-        <input onKeyUp={onKeyUpHandler} />
+        <input onChange={onKeyUpHandler}/>
+       
         {/*<p className='grayText'>Su respuesta:   paisIngresado</p>*/}
-        {esCorrecta ? <p>Es correcta</p> : <p>Incorrecto</p>}
+        {esCorrecta ? <p>Es correcta</p>  : <p>Incorrecto</p>}
+        
+        
+        <p>Puntos: {puntos}</p>
       </div>
       
       </header>

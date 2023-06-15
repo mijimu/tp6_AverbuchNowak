@@ -25,13 +25,29 @@
   justify-content: center;
 
 }
+input{
+  border-radius: 8px; height: 30px; padding-left: 1%;
+}
 .boxInput{
-  background-color: rgb(255, 251, 245);
+
+  border-color: purple;
   border-radius: 25px;
   padding: 5%;
   padding-bottom: 4%;
   align-items: center;
-
+  max-width: 50%;
+  
+}
+button{
+  margin:2%;
+  padding: 1.5%;
+  background-color: purple;
+  border:0;
+  border-radius: 2%;
+  color: #b1bde4;
+  font-weight: 800;
+  border-radius: 15px;
+  font-size: medium;
 }
 .h5{
   

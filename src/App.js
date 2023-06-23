@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Bandera from './Bandera/Bandera';
 
+
 const baseURL = "https://countriesnow.space/api/v0.1/countries/flag/images";
 
 function App() {
@@ -12,8 +13,9 @@ function App() {
   const [ paises, setPaises ] = useState ([]); 
   const [ paisSeleccionado, setPaisSeleccionado ] = useState ('');
   const [ esCorrecta, setEsCorrecta ] = useState (false);
+  const [ answer, setAnswer ] = useState('');
   
-  const sumarDiez = (puntos) => {
+ /* const sumarDiez = (puntos) => {
     setPuntos(puntos+10);
     console.log(puntos);
   };
@@ -21,27 +23,36 @@ function App() {
   const restarUno = (puntos) => {
     setPuntos(puntos-1);
     console.log(puntos);
-  };
+  };*/
 
   const getRandomObject = (paises) => {
     const paisSelected = paises[Math.floor(Math.random() * paises.length)];
     setPaisSeleccionado(paisSelected);
   };
 
-  const onKeyUpHandler = (e) => {
-    setPaisIngresado(e.target.value)
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    setPaisIngresado(e.target.paisEnviado.value)
 
-    if(paisSeleccionado.name === e.target.value){
-      setEsCorrecta(true)
+    if(paisSeleccionado.name === e.target.paisEnviado.value){
+      setEsCorrecta(true);
+      setPuntos(puntos+10);
+      setAnswer('Es correcto!');
+    }
+    else{
+      setEsCorrecta(false)
+      setPuntos(puntos-1)
+      setAnswer('Es incorrecto! Vuelva a intentarlo')
+
     }
   }
 
-  const actualizarPuntos = () => {
-    if (esCorrecta) {
-      setPuntos(sumarDiez)
-    } else {
-      setPuntos(restarUno)
-    }
+  const otraBandera = () => {
+    getRandomObject(paises);
+    setPaisIngresado('');
+    setEsCorrecta(false);
+    setPuntos(puntos);  
+    setAnswer('');
   }
 
 
@@ -53,21 +64,22 @@ function App() {
   
   }, []);
 
-console.log(puntos);
-
 return (
     <div className="App">
       <header className="App-header">
       <div className='boxInput'>
-        {paisSeleccionado.name}
         <p></p>
         <Bandera pais={paisSeleccionado}></Bandera>
-        <h5 className='h5'>Adivine el pais</h5>
-        <input onChange={onKeyUpHandler}/>
-       
-        {/*<p className='grayText'>Su respuesta:   paisIngresado</p>*/}
-        {esCorrecta ? <p>Es correcta</p>  : <p>Incorrecto</p>}
-        
+        <form onSubmit={onSubmitHandler}>
+          {esCorrecta ? <p></p> : <h5 className='h5'>Adivine el pais</h5>}
+          {esCorrecta ? <p></p> : <input type = "text" name="paisEnviado"/>}
+          {esCorrecta ? <p></p> : <button type='submit'>Enviar</button>}
+          {console.log(esCorrecta)}
+        </form>
+             
+        {answer} <p></p>      
+        {esCorrecta ? <button onClick={otraBandera}>Pasar a la siguiente</button> : <p></p>}       
+
         
         <p>Puntos: {puntos}</p>
       </div>

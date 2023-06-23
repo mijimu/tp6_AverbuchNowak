@@ -14,7 +14,8 @@
 }
 
 .App-header {
-  background-color: #b1bde4;
+  background-image: url("./fondo.jpg");
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -29,22 +30,21 @@ input{
   border-radius: 8px; height: 30px; padding-left: 1%;
 }
 .boxInput{
-
+  background-color: rgba(255, 255, 255, 0.7);
   border-color: purple;
   border-radius: 25px;
-  padding: 5%;
-  padding-bottom: 4%;
+  
   align-items: center;
   max-width: 50%;
-  
+  color:black;
 }
 button{
   margin:2%;
   padding: 1.5%;
-  background-color: purple;
+  background-color: #a1585e;
   border:0;
   border-radius: 2%;
-  color: #b1bde4;
+  color: #ffeff1;
   font-weight: 800;
   border-radius: 15px;
   font-size: medium;

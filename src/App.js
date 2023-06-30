@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react'; 
 import axios from 'axios';
 import Bandera from './Bandera/Bandera';
+import PropTypes from 'prop-types'
 
 
 const baseURL = "https://countriesnow.space/api/v0.1/countries/flag/images";
@@ -63,6 +64,7 @@ function App() {
     });
   
   }, []);
+
 
 return (
     <div className="App">
